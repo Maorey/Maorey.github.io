@@ -1,30 +1,43 @@
 {
-  "name": "react-spa-app",
+  "name": "maorey.github.io",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
-    "antd": "^2.13.7",
-    "axios": "0.16.1",
-    "core-js": "^2.5.1",
-    "immutable": "3.8.1",
-    "normalize.css": "^7.0.0",
-    "prop-types": "15.5.8",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-redux": "5.0.4",
-    "react-router": "4.1.1",
-    "react-router-dom": "4.1.1",
-    "react-router-redux": "next",
-    "react-scripts": "1.0.14",
-    "redux": "3.6.0",
-    "redux-thunk": "2.2.0"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom"
+    "test": "webpack --progress",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
   },
   "devDependencies": {
-    "react-app-rewired": "^1.4.0"
-  }
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^4.0.0-beta.1",
+    "webpack-cli": "^2.0.6",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "description": "毛瑞的博客",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maorey/Maorey.github.io.git"
+  },
+  "keywords": [
+    "react",
+    "babel",
+    "webpack",
+    "es6"
+  ],
+  "author": "Maorey",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Maorey/Maorey.github.io/issues"
+  },
+  "homepage": "https://github.com/Maorey/Maorey.github.io#readme"
 }
