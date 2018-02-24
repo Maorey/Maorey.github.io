@@ -127,7 +127,7 @@ module.exports = function (env) {
       filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
       chunkFilename: isProd ? 'js/[id]-[chunkhash].bundle.js' : 'js/[id].bundle.js',
       path: distPath,
-      publicPath: '/'
+      publicPath: ''
     },
     module: {
       rules: [
