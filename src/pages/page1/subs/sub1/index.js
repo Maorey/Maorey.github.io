@@ -24,7 +24,7 @@ export default class Sub1 extends React.Component {
     return (
       <div >
         <Button>Sub1</Button>
-        <textarea value={this.state.data}></textarea>
+        <textarea>{this.state.data}</textarea>
       </div>
     )
   }
