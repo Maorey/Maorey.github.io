@@ -91,7 +91,7 @@ class App extends React.Component {
               </div>
             </Content>
             <Footer style={{ textAlign: "center" }}>
-              毛瑞 ©2018 本站累积访问：次
+              毛瑞 ©2018 本站累计访问：次 <a href='https://github.com/Maorey'>github</a>
             </Footer>
           </Layout>
         </Layout>

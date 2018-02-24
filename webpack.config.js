@@ -25,7 +25,7 @@ const stats = {
   chunks: false,
   hash: false,
   modules: false,
-  publicPath: false,
+  publicPath: true,
   timings: true,
   version: false,
   warnings: true,
