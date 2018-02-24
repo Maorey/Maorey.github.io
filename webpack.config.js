@@ -40,6 +40,7 @@ module.exports = function (env) {
     : 'development'
   const isProd = nodeEnv === 'production'
 
+  const publicPath = isProd?'dist/':''
   // 共同插件
   const plugins = [
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' }),
@@ -59,6 +60,7 @@ module.exports = function (env) {
     new HtmlWebpackPlugin({
       template: htmlTemplate,
       title: title,
+      filename:"../index.html",
       favicon: favicon,
       inject: true,
       production: isProd,
@@ -127,7 +129,7 @@ module.exports = function (env) {
       filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
       chunkFilename: isProd ? 'js/[id]-[chunkhash].bundle.js' : 'js/[id].bundle.js',
       path: distPath,
-      publicPath: ''
+      publicPath: publicPath
     },
     module: {
       rules: [
@@ -158,7 +160,7 @@ module.exports = function (env) {
               options: {
                 minimize: isProd
               }}, 'postcss-loader'],
-            publicPath: 'dist'
+            publicPath: publicPath
           })
         },
       // scss loader
@@ -166,7 +168,7 @@ module.exports = function (env) {
           test: /\.scss$/,
           exclude: /node_modules/,
           use: ExtractTextPlugin.extract({
-            publicPath: '/',
+            publicPath: publicPath,
             fallback: 'style-loader',
             use: [
               // {loader: 'autoprefixer-loader'},
@@ -196,7 +198,7 @@ module.exports = function (env) {
         {
           test: /\.less$/,
           use: ExtractTextPlugin.extract({
-            publicPath: '/',
+            publicPath: publicPath,
             fallback: 'style-loader',
             use: [
               {
@@ -223,7 +225,7 @@ module.exports = function (env) {
           test: /\.(png|svg|jpg|gif)$/,
           loader: 'url-loader?limit=8024&name=assets/images/[name]-[hash].[ext]',
           options: {
-            publicPath: '/'
+            publicPath: publicPath
           }
         },
         {
