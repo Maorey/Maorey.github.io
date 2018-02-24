@@ -84,14 +84,16 @@ class App extends React.Component {
             </Menu>
           </Sider>
           <Layout>
-            <Header style={{ background: "#fff", padding: 0,boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)'}} />
+            <Header style={{ background: "#fff", padding: 0,boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)'}} >
+              暂未完成，关注 <a href="https://github.com/Maorey/Maorey.github.io">Maorey.github.io</a> 查看进度
+            </Header>
             <Content style={{ margin: "24px 16px 0" }}>
               <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
                 {this.getRoute(nav)}
               </div>
             </Content>
             <Footer style={{ textAlign: "center" }}>
-              毛瑞 ©2018 本站累计访问：次 <a href='https://github.com/Maorey'>github</a>
+              毛瑞 ©2018 本站累计访问： xx 次  <a href='https://github.com/Maorey'>Maorey</a>
             </Footer>
           </Layout>
         </Layout>
