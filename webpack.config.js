@@ -41,6 +41,7 @@ module.exports = function (env) {
   const isProd = nodeEnv === 'production'
 
   const publicPath = isProd?'dist/':''
+  const indexFilename = isProd?'../index.html':'index.html'
   // 共同插件
   const plugins = [
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' }),
@@ -60,7 +61,7 @@ module.exports = function (env) {
     new HtmlWebpackPlugin({
       template: htmlTemplate,
       title: title,
-      filename:"../index.html",
+      filename:indexFilename,
       favicon: favicon,
       inject: true,
       production: isProd,
