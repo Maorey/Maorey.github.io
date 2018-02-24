@@ -158,7 +158,7 @@ module.exports = function (env) {
               options: {
                 minimize: isProd
               }}, 'postcss-loader'],
-            publicPath: '/'
+            publicPath: 'dist'
           })
         },
       // scss loader
