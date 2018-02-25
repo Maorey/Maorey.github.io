@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button} from 'antd'
 import axios from 'axios'
+import MDReactComponent from 'markdown-react-js'
 
 export default class Sub1 extends React.Component {
   constructor(props) {
@@ -23,9 +24,7 @@ export default class Sub1 extends React.Component {
   }
   render() {
     return (
-      <div>
-        {this.state.data}
-      </div>
+        <MDReactComponent text={this.state.data}/>
     )
   }
 }
