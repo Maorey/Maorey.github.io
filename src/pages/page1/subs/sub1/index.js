@@ -11,10 +11,11 @@ export default class Sub1 extends React.Component {
   }
   componentDidMount() {
     axios.get('blogs/快速入门MapboxGL.md')
-      .then( (response) => {console.log(response);
+      .then( (response) => {
         this.setState({
           data:response.data
         });
+        console.log(response,this);
       })
       .catch( (error) => {
         console.log(error);
@@ -22,9 +23,8 @@ export default class Sub1 extends React.Component {
   }
   render() {
     return (
-      <div >
-        <Button>Sub1</Button>
-        <textarea>{this.state.data}</textarea>
+      <div>
+        {this.state.data}
       </div>
     )
   }
