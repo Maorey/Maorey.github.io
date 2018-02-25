@@ -124,7 +124,7 @@ module.exports = function (env) {
     entry: {
       main: path.join(sourcePath, 'index.js'),
       // static lib
-      vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill','markdown-react-js']
+      vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill']
     },
     output: {
       filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
