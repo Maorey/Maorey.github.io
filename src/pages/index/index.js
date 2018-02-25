@@ -1,6 +1,14 @@
 import React from 'react'
 import {Button} from 'antd'
+import axios from 'axios'
+
 export default class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: '加载中...'
+    };
+  }
   scrollTo (tar) {
     var tar_dom = document.getElementById(tar)
     var _offsetParet = tar_dom.offsetParent
@@ -11,14 +19,22 @@ export default class Home extends React.Component {
     }
   }
   componentDidMount () {
-
+    axios.get('blogs/blogs.json')
+    .then(res=>{
+      let html=''
+      res.data.forEach(element=>{
+        html += `<a href='#/page1/sub1'>${element.title}</a><br/>`
+      });
+      this.setState({
+        data: html
+      });
+    })
+    .catch(err=>console.log(err))
   }
 
   render () {
     return (
-      <div >
-        <Button>Index</Button>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html:this.state.data}}/>
     )
   }
 }
