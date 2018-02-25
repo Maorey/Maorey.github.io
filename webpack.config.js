@@ -124,7 +124,7 @@ module.exports = function (env) {
     entry: {
       main: path.join(sourcePath, 'index.js'),
       // static lib
-      vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill']
+      vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill','markdown-react-js']
     },
     output: {
       filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
@@ -254,7 +254,7 @@ module.exports = function (env) {
     // webpack dev server
     devServer: {
     // 文件路劲，一般静态文件需要
-      contentBase: path.join(__dirname, 'src'),
+      contentBase: path.join(__dirname),
     // 是否启用gzip压缩
       compress: true,
     // 是否启用热替换

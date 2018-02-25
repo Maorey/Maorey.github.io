@@ -6,7 +6,7 @@ const outputPath = path.resolve('dll')
 module.exports = {
   devtool: 'source-map',
   entry: {
-    react_vendor: ['react', 'react-dom', 'react-router-dom']
+    react_vendor: ['react', 'react-dom', 'react-router-dom','markdown-react-js']
     // others: ['']
   },
 

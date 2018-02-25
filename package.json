@@ -6,6 +6,7 @@
     "antd": "^3.2.1",
     "axios": "^0.17.1",
     "es6-promise": "^4.1.1",
+    "markdown-react-js": "^1.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.7",
@@ -17,7 +18,7 @@
     "test": "webpack --progress",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "dev": "webpack-dev-server --progress --watch --env.development --env.platform=web",
-    "generdll": "webpack --config webpack.dll.js"
+    "dll": "webpack --config webpack.dll.js"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^2.1.2",
