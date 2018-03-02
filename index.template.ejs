@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title id="blogTitle"><%= htmlWebpackPlugin.options.title %></title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="Author" content="毛瑞">
+		<meta name="Keywords" content="blog">
+		<meta name="Description" content="毛瑞的个人博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <style>
         *{padding: 0;margin: 0;box-sizing: border-box}
         li{list-style: none}
         a{text-decoration: none}
-        html,body{width: 100%;height: 100%;font-family: "Helvetica Neue",Arial,STHeiti,"Microsoft YaHei",sans-serif,Helvetica,"DroidSansFallback",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3"}
+        html,body{width: 100%;height: 100%;font-family: "Helvetica Neue",Arial,STHeiti,"Microsoft YaHei",sans-serif,Helvetica,"DroidSansFallback",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3"}#ZIM5Kx8dq{z-index:-1;position: fixed;top: 0;left: 0;}
   </style>
     <!--  manifest.json variable  -->
   </head>
@@ -18,5 +21,16 @@
     <%=htmlWebpackPlugin.files.webpackManifest%>
 
     <script src="https://hm.baidu.com/hm.js?4b69c4f27e1cd1be1de87320d273bec2"></script>
+    <!-- 以下背景 - 组件化失败（要砍人了） -->
+    <body bgcolor="#FFFFFF" id="ISX0lt_qbex" class="home" link="#000000" vlink="#000000">
+      <div id="qJU4JntGP">
+        <canvas id="ZIM5Kx8dq" style="cursor: default;"/>
+      </div>
+      <div id="rAyqYDfzD" style="display: none;"></div>
+    </body>
+    <script type="text/javascript" src="./resources/all.bak.js"></script>
+    <script type="text/javascript" src="./resources/Main.bak.js"></script>
+    <script type="text/javascript" src="./resources/LoadDataFiles.js"></script>
+    <script type="text/javascript" src="./resources/InterpolationsManager.js"></script>
   </body>
 </html>

@@ -9,8 +9,8 @@ import Bundle from '../components/lazyload'
 const loadComponent = (Component) => () => (
   <Bundle load={Component}>
     {
-              (Component) => Component ? <Component /> : <div style={{height: '100vh'}}>正在加载</div>
-          }
+      (Component) => Component ? <Component /> : <div style={{height: '100vh'}}>加载中...</div>
+    }
   </Bundle>
   )
 const nav = [

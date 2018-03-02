@@ -35,9 +35,7 @@ const stats = {
 }
 
 module.exports = function (env) {
-  const nodeEnv = process.env.NODE_ENV === 'production'
-    ? process.env.NODE_ENV
-    : 'development'
+  const nodeEnv = process.env.NODE_ENV === 'production' ? process.env.NODE_ENV : 'development'
   const isProd = nodeEnv === 'production'
 
   const publicPath = isProd?'dist/':''
@@ -53,7 +51,7 @@ module.exports = function (env) {
     }),
     // create css bundle
     new ExtractTextPlugin({
-      filename: isProd ? 'css/[name]-[contenthash].css' : 'css/[name].css',
+      filename: isProd ? 'css/[name][contenthash].css' : 'css/[name].css',
       allChunks: true
     }),
     // create index.html
@@ -107,16 +105,16 @@ module.exports = function (env) {
       // don't spit out any errors in compiled assets
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor_manifest.json')}),
-      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom_manifest.json')}),
-      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom_manifest.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor.json')}),
+      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom.json')}),
+      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom.json')}),
       // // make DLL assets available for the app to download
       // new AddAssetHtmlPlugin([
-      //   { filepath: require.resolve('./dll/react.dll.js') },
-      //   { filepath: require.resolve('./dll/react_dom.dll.js') },
-      //   { filepath: require.resolve('./dll/react_router_dom.dll.js') }
+      //   { filepath: require.resolve('./dll/react.js') },
+      //   { filepath: require.resolve('./dll/react_dom.js') },
+      //   { filepath: require.resolve('./dll/react_router_dom.js') }
       // ])
-      new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/react_vendor.dll.js') })
+      new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/react_vendor.js') })
     )
   }
   return {
@@ -127,8 +125,8 @@ module.exports = function (env) {
       vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill']
     },
     output: {
-      filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
-      chunkFilename: isProd ? 'js/[id]-[chunkhash].bundle.js' : 'js/[id].bundle.js',
+      filename: isProd ? 'js/[name][chunkhash].js' : 'js/[name].js',
+      chunkFilename: isProd ? 'js/[id][chunkhash].js' : 'js/[id].js',
       path: distPath,
       publicPath: publicPath
     },
@@ -149,7 +147,6 @@ module.exports = function (env) {
               ]
             }
           }
-
         },
       // css loader
         {

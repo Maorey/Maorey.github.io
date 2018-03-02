@@ -7,6 +7,7 @@ import createBrowserHistory from "history/createBrowserHistory";
 // BrowserRouter first，please url不能定位搞个球啊
 import { HashRouter as Router, Route, Link, NavLink } from "react-router-dom";
 import './index.scss'
+// import Background from './components/background'
 
 Promise.polyfill();
 
@@ -65,41 +66,66 @@ class App extends React.Component {
   };
   render() {
     return (
-      <Router>
-        <Layout>
-          <Sider
-            breakpoint="lg"
-            collapsedWidth="0"
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
-            className='cus-sider'
-            width={250}
-          >
-            <div className="logo">
-              <h1>博客</h1>
-            </div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]} className='menu'>
-              {this.getMenuItem(nav)}
-            </Menu>
-          </Sider>
+        <Router>
           <Layout>
-            <Header style={{ background: "#fff", padding: 0,boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)'}} >
-              暂未完成，关注 <a href="https://github.com/Maorey/Maorey.github.io">Maorey.github.io</a> 查看进度
-            </Header>
-            <Content style={{ margin: "24px 16px 0" }}>
-              <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
-                {this.getRoute(nav)}
+            <Sider breakpoint="lg" collapsedWidth="0" onCollapse={(collapsed, type) => {
+                console.log(collapsed, type);
+              }} className='cus-sider' width={250} >
+              <div className="logo">
+                <h1>博客</h1>
               </div>
-            </Content>
-            <Footer style={{ textAlign: "center" }}>
-              毛瑞 ©2018 本站累计访问： xx 次  <a href='https://github.com/Maorey'>Maorey</a>
-            </Footer>
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]} className='menu'>
+                {this.getMenuItem(nav)}
+              </Menu>
+            </Sider>
+            <Layout>
+              <Header>
+                暂未完成，关注 <a href="https://github.com/Maorey/Maorey.github.io">Maorey.github.io</a> 查看进度
+              </Header>
+              <Content style={{ margin: "24px 16px 0" }}>
+                {/* <Background/> */}
+                <div style={{ padding: 24, minHeight: 360 }}>
+                  {this.getRoute(nav)}
+                </div>
+              </Content>
+              <Footer style={{ textAlign: "center" }}>
+                毛瑞 ©2018 本站累计访问： xx 次  <a href='https://github.com/Maorey'>Maorey</a>
+              </Footer>
+            </Layout>
           </Layout>
-        </Layout>
-      </Router>
+        </Router>
     );
   }
 }
 
 render(<App />, document.getElementById("root"));
+
+// import React from 'react'
+// import { render } from 'react-dom'
+// import { createStore, combineReducers } from 'redux'
+// import { Provider } from 'react-redux'
+// // import { browserHistory } from 'react-router'
+// import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+// import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-router-dom'
+// debugger
+// const store = createStore(
+//   combineReducers({
+//     routing: routerReducer
+//   })
+// )
+// const history = syncHistoryWithStore(browserHistory, store)
+// render(
+//   <Provider store={store}>
+//     <Router history={history}>
+//       <Route path="/" component={() => (
+//         <div>
+//           <h1>Home <Link to="/#about">About</Link></h1>
+//           <h1>Home <Link to="/#other">Other</Link></h1>
+//         </div>
+//       )}/>
+//         <Route path="/#about" component={() => (<h1>About <Link to="/">Home</Link></h1>)}/>
+//         <Route path="/#other" component={() => (<h1>Other <Link to="/">Home</Link></h1>)}/>
+//     </Router>
+//   </Provider>,
+//   document.getElementById('root'),
+// )

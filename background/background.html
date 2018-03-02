@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" __fvdsurfcanyoninserted="1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Views of the sky #2</title>
+		<style type="text/css" media="screen">
+			 html, body{ height:100%;}
+			 body { margin:0; padding:0; overflow:hidden; }
+			 textarea:focus { border: 2px solid red; outline: 0px; resize: none; }
+			 body {font-family: Arial}
+		</style>
+	</head>
+
+<body bgcolor="#FFFFFF" id="index" class="home" link="#000000" vlink="#000000">
+		<div id="maindiv">
+			<canvas id="main" width="1920" height="965" style="cursor: default;"/>
+		</div>
+		<div id="removeDiv" style="display: none;"></div>
+		<script type="text/javascript" src="./libs/all.min.js"></script>
+		<script type="text/javascript" src="./libs/Main.js"></script>
+		<script type="text/javascript" src="./libs/LoadDataFiles.js"></script>
+		<script type="text/javascript" src="./libs/InterpolationsManager.js"></script>
+		<script type="text/javascript">
+			var flag=location.href.split("?")[1];
+			if(flag && (flag=="0"||flag=="1")){
+				setTimeout(function(){inter.start();},500);
+			}
+		</script>
+</body>
+</html>

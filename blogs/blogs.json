@@ -2,8 +2,9 @@
   {
     "title":"快速入门MapboxGL",
     "date":"2017-10-25",
-    "cover":"covver/MapBoxGL.png",
+    "cover":"cover/MapBoxGL.png",
     "abstract":"",
-    "Label":"GIS,可视化,MapboxGL"
+    "Label":"GIS,可视化,MapboxGL",
+    "right":"original"
   }
 ]
