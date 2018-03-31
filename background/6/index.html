@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>人工智能五子棋</title>
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      display: table;
+    }
+
+    body {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    #c1 {
+      display: block;
+      margin: 0 auto;
+      box-shadow: 1px 1px 5px #000000;
+    }
+    #info{
+      width: 100%;
+      text-align: center;
+      font: bold 25px "Microsoft YaHei";
+    }
+    p.win:before{
+      content: "你赢了！";
+      color:cornflowerblue;
+    }
+    p.lose:before{
+      content: "你输了！";
+      color: #E91E63;
+    }
+  </style>
+
+  <script src="js/game.js"></script>
+
+</head>
+
+<body>
+  <p id="info"></p>
+  <canvas id="c1" width="450px" height="450px"></canvas>
+</body>
+
+</html>

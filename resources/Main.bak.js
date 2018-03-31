@@ -115,7 +115,7 @@ allDataLoaded=function(){
 }
 onWheelListener=function(e){
 	zoom -= e.value*zoom*0.001;
-	zoom = Math.min(Math.max(zoom, 0.001), 50000);
+	zoom = Math.min(Math.max(zoom, 0.8), 5);
 }
 resizeWindow = function(){
 	cX = canvasWidth*0.5;

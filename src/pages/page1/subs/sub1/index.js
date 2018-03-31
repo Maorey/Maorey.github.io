@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import ReactMarkdown from 'react-markdown'
 import CodeBlock from './codeBlock'
+import './styles/imageStyle.css'
 
 export default class Sub1 extends React.Component {
   constructor(props) {
