@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import hljs from "highlight.js"
 import './styles/codeStyle.css'
-import './styles/imageStyle.css'
 
 export default class codeBlock extends React.PureComponent {
   static defaultProps = {
