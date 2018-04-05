@@ -1,0 +1,745 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>卷曲噪音</title>
+
+<style>
+body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}</style>
+</head>
+<body>
+
+<script src="js/three.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/GPUComputationRenderer.js"></script>
+
+<div class="wrapper" id="wrapper"></div>
+
+<script id="simulation_vel" type="x-shader/x-fragment">
+
+//
+// Description : Array and textureless GLSL 2D/3D/4D simplex
+//               noise functions.
+//      Author : Ian McEwan, Ashima Arts.
+//  Maintainer : ijm
+//     Lastmod : 20110822 (ijm)
+//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
+//               Distributed under the MIT License. See LICENSE file.
+//               https://github.com/ashima/webgl-noise
+//
+
+vec3 mod289(vec3 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec4 mod289(vec4 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec4 permute(vec4 x) {
+  return mod289(((x*34.0)+1.0)*x);
+}
+
+vec4 taylorInvSqrt(vec4 r){
+  return 1.79284291400159 - 0.85373472095314 * r;
+}
+
+float snoise(vec3 v) {
+
+  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+  // First corner
+  vec3 i  = floor(v + dot(v, C.yyy) );
+  vec3 x0 =   v - i + dot(i, C.xxx) ;
+
+  // Other corners
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min( g.xyz, l.zxy );
+  vec3 i2 = max( g.xyz, l.zxy );
+
+  //   x0 = x0 - 0.0 + 0.0 * C.xxx;
+  //   x1 = x0 - i1  + 1.0 * C.xxx;
+  //   x2 = x0 - i2  + 2.0 * C.xxx;
+  //   x3 = x0 - 1.0 + 3.0 * C.xxx;
+  vec3 x1 = x0 - i1 + C.xxx;
+  vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
+  vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
+
+  // Permutations
+  i = mod289(i);
+  vec4 p = permute( permute( permute(
+      i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+    + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+    + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+  // Gradients: 7x7 points over a square, mapped onto an octahedron.
+  // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
+  float n_ = 0.142857142857; // 1.0/7.0
+  vec3  ns = n_ * D.wyz - D.xzx;
+
+  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+  vec4 x = x_ *ns.x + ns.yyyy;
+  vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+
+  vec4 b0 = vec4( x.xy, y.xy );
+  vec4 b1 = vec4( x.zw, y.zw );
+
+  //vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;
+  //vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+  vec3 p0 = vec3(a0.xy,h.x);
+  vec3 p1 = vec3(a0.zw,h.y);
+  vec3 p2 = vec3(a1.xy,h.z);
+  vec3 p3 = vec3(a1.zw,h.w);
+
+  //Normalise gradients
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+
+  // Mix final noise value
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+
+}
+
+vec3 snoiseVec3( vec3 x ){
+
+  float s  = snoise(vec3( x ));
+  float s1 = snoise(vec3( x.y - 19.1 , x.z + 33.4 , x.x + 47.2 ));
+  float s2 = snoise(vec3( x.z + 74.2 , x.x - 124.5 , x.y + 99.4 ));
+  vec3 c = vec3( s , s1 , s2 );
+  return c;
+
+}
+
+// via: https://petewerner.blogspot.jp/2015/02/intro-to-curl-noise.html
+vec3 curlNoise( vec3 p ){
+
+  const float e = 0.1;
+
+  float  n1 = snoise(vec3(p.x, p.y + e, p.z));
+  float  n2 = snoise(vec3(p.x, p.y - e, p.z));
+  float  n3 = snoise(vec3(p.x, p.y, p.z + e));
+  float  n4 = snoise(vec3(p.x, p.y, p.z - e));
+  float  n5 = snoise(vec3(p.x + e, p.y, p.z));
+  float  n6 = snoise(vec3(p.x - e, p.y, p.z));
+
+  float x = n2 - n1 - n4 + n3;
+  float y = n4 - n3 - n6 + n5;
+  float z = n6 - n5 - n2 + n1;
+
+
+  const float divisor = 1.0 / ( 2.0 * e );
+  return normalize( vec3( x , y , z ) * divisor );
+}
+
+
+uniform float timer;
+uniform float delta;
+uniform float speed;
+uniform float factor;
+uniform float evolution;
+uniform float radius;
+
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
+  vec4 c = texture2D( posTex, uv );
+  vec4 oldVel = texture2D( velTex, uv );
+
+  vec3 pos = c.xyz;
+  float life = oldVel.a;
+
+  float s = life / 100.0;
+  float speedInc = 1.0;
+
+  vec3 v = factor * speedInc * delta * speed * ( curlNoise( .2 * pos) );
+
+  pos += v;
+  life -= 0.3;
+
+  if( life <= 0.0) {
+
+    pos = texture2D( defTex, uv ).xyz;
+    life = 100.0;
+
+  }
+
+
+  gl_FragColor = vec4( pos - c.xyz, life );
+}
+
+
+</script>
+
+<script id="simulation_pos" type="x-shader/x-fragment">
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
+  vec4 tmpPos = texture2D( posTex, uv );
+  vec3 pos = tmpPos.xyz;
+  vec4 tmpVel = texture2D( velTex, uv );
+
+  vec3 vel = tmpVel.xyz;
+
+  pos += vel;
+  gl_FragColor = vec4( pos, 0.0 );
+}
+</script>
+
+<script id="simulation_def" type="x-shader/x-fragment">
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
+  vec4 tmpPos = texture2D( defTex, uv );
+  gl_FragColor = vec4( tmpPos.rgb, 0.0 );
+}
+</script>
+
+
+<script id="vs-particles" type="x-shader/x-vertex">
+
+attribute float aNum;
+attribute float aRandom;
+// attribute vec2 aPosUv
+
+attribute vec3 aColor;
+
+
+uniform sampler2D posMap;
+uniform sampler2D velMap;
+
+uniform float size;
+
+uniform float timer;
+uniform vec3 boxScale;
+uniform float meshScale;
+
+uniform mat4 shadowMatrix;
+
+varying vec3 vPosition;
+varying vec3 vColor;
+
+varying vec4 vShadowCoord;
+
+
+mat3 calcLookAtMatrix(vec3 vector, float roll) {
+  vec3 rr = vec3(sin(roll), cos(roll), 0.0);
+  vec3 ww = normalize(vector);
+  vec3 uu = normalize(cross(ww, rr));
+  vec3 vv = normalize(cross(uu, ww));
+
+  return mat3(uu, ww, vv);
+}
+
+void main() {
+  vec2 posUv;
+  posUv.x = mod(aNum, (size - 1.0));
+  posUv.y = float(aNum / (size - 1.0));
+  posUv /= vec2(size);
+  vec4 cubePosition = texture2D( posMap, posUv );
+  vec4 cubeVelocity = texture2D( velMap, posUv );
+  float alpha = cubeVelocity.a / 100.0;
+  float scale = 0.025 * 4.0 * (1.0 - alpha) * alpha;
+
+  mat4 localRotationMat = mat4( calcLookAtMatrix( cubeVelocity.xyz, 0.0 ) );
+
+  vec3 modifiedVertex =  (localRotationMat * vec4( position * scale * aRandom * (vec3(1.0))  * boxScale * meshScale, 1.0 ) ).xyz;
+  vec3 modifiedPosition = modifiedVertex + cubePosition.xyz;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( modifiedPosition, 1.0 );
+  vPosition = modifiedPosition;
+
+  // via: line 7 in https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/shadowmap_vertex.glsl
+  vShadowCoord = shadowMatrix * modelMatrix * vec4( modifiedPosition, 1. );
+
+  vColor = aColor;
+}
+
+</script>
+
+<script id="fs-particles" type="x-shader/x-fragment">
+varying vec3 vPosition;
+varying vec3 vColor;
+
+varying vec4 vShadowCoord;
+uniform sampler2D shadowMap;
+uniform vec2 shadowMapSize;
+uniform float shadowBias;
+uniform float shadowRadius;
+
+// uniform sampler2D projector;
+
+uniform vec3 lightPosition;
+
+uniform vec2 resolution;
+
+float bias;
+
+
+// via: https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/packing.glsl
+const float UnpackDownscale = 255. / 256.; // 0..1 -> fraction (excluding 1)
+const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256.,  256. );
+const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
+
+float unpackRGBAToDepth( const in vec4 v ) {
+  return dot( v, UnpackFactors );
+}
+
+float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
+  return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );
+}
+
+float getShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {
+
+  float shadow = 1.0;
+
+  shadowCoord.xyz /= shadowCoord.w;
+  shadowCoord.z += shadowBias;
+
+  // if ( something && something ) breaks ATI OpenGL shader compiler
+  // if ( all( something, something ) ) using this instead
+
+  bvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );
+  bool inFrustum = all( inFrustumVec );
+
+  bvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );
+  bool frustumTest = all( frustumTestVec );
+
+  if ( frustumTest ) {
+
+    vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
+
+    float dx0 = - texelSize.x * shadowRadius;
+    float dy0 = - texelSize.y * shadowRadius;
+    float dx1 = + texelSize.x * shadowRadius;
+    float dy1 = + texelSize.y * shadowRadius;
+
+    shadow = (
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +
+      texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )
+    ) * ( 1.0 / 9.0 );
+  }
+
+  return shadow;
+}
+
+mat2 rotationMatrix( float a ) {
+  return mat2( cos( a ), sin( a ),
+          -sin( a ), cos( a ) );
+}
+
+
+vec3 calcIrradiance_hemi(vec3 newNormal, vec3 lightPos, vec3 grd, vec3 sky){
+  float dotNL = dot(newNormal, normalize(lightPos));
+  float hemiDiffuseWeight = 0.5 * dotNL + 0.5;
+
+  return mix(grd, sky, hemiDiffuseWeight);
+}
+
+vec3 calcIrradiance_dir(vec3 newNormal, vec3 lightPos, vec3 light){
+  float dotNL = dot(newNormal, normalize(lightPos));
+
+  return light * max(0.0, dotNL);
+}
+
+
+const float PI = 3.14159265358979323846264;
+
+// hemisphere ground color
+const vec3 hemiLight_g = vec3(256.0, 246.0, 191.0) / vec3(256.0);
+
+// hemisphere sky color
+const vec3 hemiLight_s_1 = vec3(0.5882352941176471,0.8274509803921568,0.8823529411764706);
+const vec3 hemiLight_s_2 = vec3(0.9686274509803922,0.8509803921568627,0.6666666666666666);
+const vec3 hemiLight_s_3 = vec3(0.8784313725490196,0.5882352941176471,0.7647058823529411);
+
+// directional light color
+const vec3 dirLight = vec3(0.4);
+const vec3 dirLight_2 = vec3(0.1);
+
+
+
+
+
+const vec3 hemiLightPos_1 = vec3(100.0, 100.0, -100.0);
+const vec3 hemiLightPos_2 = vec3(-100.0, -100.0, 100.0);
+const vec3 hemiLightPos_3 = vec3(-100.0, 100.0, 100.0);
+
+void main() {
+  vec3 fdx = dFdx( vPosition );
+  vec3 fdy = dFdy( vPosition );
+  vec3 n = normalize(cross(fdx, fdy));
+
+  float diffuse = max(0.0, dot(n, normalize(lightPosition)));
+
+  float theta = clamp( -diffuse, 0., 1. );
+  bias = 0.005 * tan( acos( theta ) );
+  bias = clamp( bias, 0., 0.01 );
+
+  // shadow gradient
+  // float mask = sqrt(pow((vShadowCoord.x - 0.5) * 2.0, 2.0) + pow((vShadowCoord.y - 0.5) * 2.0, 2.0));
+
+  // mask = 1.0 - smoothstep(0.5, 1.0, mask);
+
+  vec3 hemiColor = vec3(0.0);
+  hemiColor += calcIrradiance_hemi(n, hemiLightPos_1, hemiLight_g, hemiLight_s_1) * 0.43;
+  hemiColor += calcIrradiance_hemi(n, hemiLightPos_2, hemiLight_g, hemiLight_s_2) * 0.33;
+  hemiColor += calcIrradiance_hemi(n, hemiLightPos_3, hemiLight_g, hemiLight_s_3) * 0.38;
+
+  vec3 dirColor = vec3(0.0);
+  dirColor += calcIrradiance_dir(n, lightPosition, dirLight);
+
+  vec3 dirLightPos2 = vec3(-lightPosition.x, -lightPosition.y, -lightPosition.z);
+  dirColor += calcIrradiance_dir(n, dirLightPos2, dirLight_2);
+
+
+  float shadow = 1.0;
+  shadow *= getShadow(shadowMap, shadowMapSize, bias, shadowRadius, vShadowCoord);
+
+  vec3 color = vColor * hemiColor;
+  color += dirColor * shadow;
+
+
+  gl_FragColor = vec4(color, 0.0);
+}
+
+</script>
+
+<script id="fs-particles-shadow" type="x-shader/x-fragment">
+
+// via: https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/packing.glsl
+
+const float PackUpscale = 256. / 255.; // fraction -> 0..1 (including 1)
+const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256.,  256. );
+const float ShiftRight8 = 1. / 256.;
+
+vec4 packDepthToRGBA( const in float v ) {
+  vec4 r = vec4( fract( v * PackFactors ), v );
+  r.yzw -= r.xyz * ShiftRight8; // tidy overflow
+  return r * PackUpscale;
+}
+
+void main() {
+
+  gl_FragColor = packDepthToRGBA( gl_FragCoord.z );
+
+}
+
+</script>
+
+<script>
+// curl noise
+// https://petewerner.blogspot.jp/2015/02/intro-to-curl-noise.html
+
+// inspired by https://www.clicktorelease.com/code/polygon-shredder/
+
+window.onload = () =>{
+  var webgl = new Webgl();
+  window.onresize = () => {
+    webgl.resize();
+  }
+}
+
+class Webgl{
+  constructor(){
+    this.size = 28;
+    this.widthW = document.body.clientWidth;
+    this.heightW = window.innerHeight;
+		this.init();
+  }
+
+  init(){
+		this.container = document.getElementById( "wrapper" );
+
+		this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+		// renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer.setSize( this.widthW, this.heightW );
+		this.renderer.setClearColor( 0xff00ff );
+		this.container.appendChild( this.renderer.domElement );
+
+
+		this.scene = new THREE.Scene();
+
+		this.colorPallete = [
+		  new THREE.Color(0x0d0232),
+		  new THREE.Color(0xe50061),
+		  new THREE.Color(0x1cafc0),
+		  new THREE.Color(0xefcb03)
+		];
+
+		this.camera = new THREE.PerspectiveCamera( 45, this.widthW / this.heightW, .01, 10000 );
+		this.scene.add( this.camera );
+		this.camera.position.set(-0.1, 4.0, 0.1);
+
+		var controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+
+		this.sim = new Simulation(this.renderer, this.size);
+
+		this.setLight();
+		this.createObj();
+
+		this.time = new THREE.Clock();
+		this.render();
+  }
+
+  setLight(){
+  	this.light = new THREE.DirectionalLight( 0xFFAA55 );
+		this.light.position.set(-4, -6, 10);
+		this.light.castShadow = true;
+		this.shadowCamera = this.light.shadow.camera;
+		this.shadowCamera.lookAt( this.scene.position );
+
+		this.light.shadow.matrix.set(
+			0.5, 0.0, 0.0, 0.5,
+			0.0, 0.5, 0.0, 0.5,
+			0.0, 0.0, 0.5, 0.5,
+			0.0, 0.0, 0.0, 1.0
+		);
+
+		this.light.shadow.matrix.multiply( this.shadowCamera.projectionMatrix );
+		this.light.shadow.matrix.multiply( this.shadowCamera.matrixWorldInverse );
+
+		if(this.light.shadow.map === null){
+			this.light.shadow.mapSize.x = 2048;
+			this.light.shadow.mapSize.y = 2048;
+
+			var pars = { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat };
+
+			this.light.shadow.map = new THREE.WebGLRenderTarget( this.light.shadow.mapSize.x,this.light.shadow.mapSize.y, pars );
+			// light.shadow.map.texture.name = light.name + ".shadowMap";
+		}
+  }
+
+  createObj(){
+  	// var originalG = new THREE.BoxBufferGeometry(1, 1, 1);
+  	var originalG = new THREE.OctahedronBufferGeometry(1, 0);
+
+
+		var geometry = new THREE.InstancedBufferGeometry();
+
+		// vertex
+		var vertices = originalG.attributes.position.clone();
+
+		geometry.addAttribute("position", vertices);
+
+		var normals = originalG.attributes.normal.clone();
+		geometry.addAttribute("normal", normals);
+
+	    // uv
+		var uvs = originalG.attributes.uv.clone();
+		geometry.addAttribute("uv", uvs);
+
+	    // index
+		// var indices = originalG.index.clone();
+		// geometry.setIndex(indices);
+
+
+		geometry.maxInstancedCount = this.sim.size * this.sim.size;
+
+		var nums = new THREE.InstancedBufferAttribute(new Float32Array(this.sim.size * this.sim.size * 1), 1, 1);
+		var randoms = new THREE.InstancedBufferAttribute(new Float32Array(this.sim.size * this.sim.size * 1), 1, 1);
+		var colors = new THREE.InstancedBufferAttribute(new Float32Array(this.sim.size * this.sim.size * 3), 3, 1);
+
+		for(var i = 0; i < nums.count; i++){
+			var _color = this.colorPallete[Math.floor(Math.random() * this.colorPallete.length)];
+
+			nums.setX(i, i);
+			randoms.setX(i, Math.random() * 0.5 + 1);
+			colors.setXYZ(i, _color.r, _color.g, _color.b);
+		}
+
+		geometry.addAttribute("aNum", nums);
+		geometry.addAttribute("aRandom", randoms);
+		geometry.addAttribute("aColor", colors);
+
+		var scale = {
+			x: 2,
+			y: 8,
+			z: 2
+		}
+
+
+		this.material = new THREE.ShaderMaterial( {
+			uniforms: {
+				posMap: { type: "t", value: this.sim.gpuCompute.getCurrentRenderTarget(this.sim.pos).texture },
+				velMap: { type: "t", value: this.sim.gpuCompute.getCurrentRenderTarget(this.sim.vel).texture },
+				size: { type: "f", value: this.sim.size },
+
+				timer: { type: 'f', value: 0 },
+				boxScale: { type: 'v3', value: new THREE.Vector3(scale.x, scale.y, scale.z) },
+				meshScale: { type: 'f', value: 0.7 },
+
+				shadowMap: { type: 't', value: this.light.shadow.map },
+				shadowMapSize: {type: "v2", value: this.light.shadow.mapSize},
+				shadowBias: {type: "f", value: this.light.shadow.bias},
+				shadowRadius: {type: "f", value: this.light.shadow.radius},
+
+				// Line 217 in https://github.com/mrdoob/three.js/blob/dev/src/renderers/webgl/WebGLShadowMap.js
+				shadowMatrix: { type: 'm4', value: this.light.shadow.matrix},
+				lightPosition: { type: 'v3', value: this.light.position }
+			},
+
+			vertexShader: document.getElementById( 'vs-particles' ).textContent,
+			fragmentShader: document.getElementById( 'fs-particles' ).textContent,
+			side: THREE.DoubleSide,
+			shading: THREE.FlatShading
+		} );
+
+		this.mesh = new THREE.Mesh( geometry, this.material );
+
+		this.scene.add( this.mesh );
+
+
+		this.shadowMaterial = new THREE.ShaderMaterial( {
+
+			uniforms: {
+
+				posMap: { type: "t", value: this.sim.gpuCompute.getCurrentRenderTarget(this.sim.pos).texture },
+				velMap: { type: "t", value: this.sim.gpuCompute.getCurrentRenderTarget(this.sim.vel).texture },
+				size: { type: "f", value: this.sim.size },
+
+				timer: { type: 'f', value: 0 },
+				boxScale: { type: 'v3', value: new THREE.Vector3(scale.x, scale.y, scale.z) },
+				meshScale: { type: 'f', value: 0.7 },
+
+				shadowMatrix: { type: 'm4', value: this.light.shadow.matrix},
+				lightPosition: { type: 'v3', value: this.light.position }
+			},
+			vertexShader: document.getElementById( 'vs-particles' ).textContent,
+			fragmentShader: document.getElementById( 'fs-particles-shadow' ).textContent,
+		  side: THREE.DoubleSide
+
+		} );
+
+  }
+
+  render(){
+  	var delta = this.time.getDelta() * 4;
+		var time = this.time.elapsedTime;
+
+		this.sim.velUniforms.timer.value = time;
+		this.sim.velUniforms.delta.value = delta;
+
+		this.sim.gpuCompute.compute();
+
+		this.material.uniforms.posMap.value = this.sim.gpuCompute.getCurrentRenderTarget(this.sim.pos).texture;
+		this.material.uniforms.velMap.value = this.sim.gpuCompute.getCurrentRenderTarget(this.sim.vel).texture;
+
+		this.shadowMaterial.uniforms.posMap.value = this.sim.gpuCompute.getCurrentRenderTarget(this.sim.pos).texture;
+		this.shadowMaterial.uniforms.velMap.value = this.sim.gpuCompute.getCurrentRenderTarget(this.sim.vel).texture;
+
+		this.material.uniforms.timer.value = this.shadowMaterial.uniforms.timer.value = time;
+
+
+
+		this.mesh.material = this.shadowMaterial;
+		this.renderer.render( this.scene, this.shadowCamera, this.light.shadow.map);
+
+		this.renderer.setClearColor( 0x2e0232 );
+		this.mesh.material = this.material;
+		this.renderer.render( this.scene, this.camera );
+
+  	requestAnimationFrame(this.render.bind(this));
+  }
+
+  resize(){
+    this.widthW = document.body.clientWidth;
+    this.heightW = window.innerHeight;
+
+  	this.camera.aspect = this.widthW / this.heightW;
+		this.camera.updateProjectionMatrix();
+		this.renderer.setSize( this.widthW, this.heightW);
+  }
+}
+
+class Simulation{
+  constructor(renderer, size){
+    this.renderer = renderer;
+    this.size = size;
+    this.init();
+  }
+
+  init(){
+    this.gpuCompute = new GPUComputationRenderer( this.size, this.size, this.renderer );
+
+    this.dataPos = this.gpuCompute.createTexture();
+    this.dataVel = this.gpuCompute.createTexture();
+    this.dataDef = this.gpuCompute.createTexture();
+
+
+    var posArray = this.dataPos.image.data;
+    var velArray = this.dataVel.image.data;
+    var defArray = this.dataDef.image.data;
+
+
+    for ( var i = 0, il = posArray.length; i < il; i += 4 ) {
+
+      var phi = Math.random() * 2 * Math.PI;
+      var theta = Math.random() * Math.PI;
+      var r = 0.8 + Math.random() * 2;
+
+      defArray[ i + 0 ] = posArray[ i + 0 ] = r * Math.sin( theta) * Math.cos( phi );
+      defArray[ i + 1 ] = posArray[ i + 1 ] = r * Math.sin( theta) * Math.sin( phi );
+      defArray[ i + 2 ] = posArray[ i + 2 ] = r * Math.cos( theta );
+
+      velArray[ i + 3 ] = Math.random() * 100; // frames life
+      // if(i < 50) console.log(velArray[ i + 3 ])
+    }
+
+    this.def = this.gpuCompute.addVariable( "defTex", document.getElementById( 'simulation_def' ).textContent, this.dataDef );
+    this.vel = this.gpuCompute.addVariable( "velTex", document.getElementById( 'simulation_vel' ).textContent, this.dataVel );
+    this.pos = this.gpuCompute.addVariable( "posTex", document.getElementById( 'simulation_pos' ).textContent, this.dataPos );
+
+    this.gpuCompute.setVariableDependencies( this.def, [ this.pos, this.vel, this.def ] );
+    this.gpuCompute.setVariableDependencies( this.vel, [ this.pos, this.vel, this.def ] );
+    this.gpuCompute.setVariableDependencies( this.pos, [ this.pos, this.vel, this.def ] );
+
+
+    // var posUniforms = this.pos.material.uniforms;
+    this.velUniforms = this.vel.material.uniforms;
+
+    this.velUniforms.timer = { value: 0.0 };
+    this.velUniforms.delta = { value: 0.0 };
+    this.velUniforms.speed = { value: 0.5 };
+    this.velUniforms.factor = { value: 0.5 };
+    this.velUniforms.evolution = { value: 0.5 };
+    this.velUniforms.radius = { value: 2.0 };
+
+    var error = this.gpuCompute.init();
+    if ( error !== null ) {
+        console.error( error );
+    }
+  }
+}</script>
+
+</body>
+</html>
