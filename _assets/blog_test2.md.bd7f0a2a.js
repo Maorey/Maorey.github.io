@@ -1,1 +1,0 @@
-import{g as t,f as e,j as r}from"./common-da11353c.js";const a='{"title":"","frontmatter":{"index":2},"relativePath":"blog/test2.md","lastUpdated":1606031699527.2566}';var n={};const o=r("p",null,"大家吼, 这是我的第二篇博客",-1);n.render=function(r,a,n,l,d,s){return e(),t("div",null,[o])};export default n;export{a as __pageData};

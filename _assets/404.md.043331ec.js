@@ -1,1 +1,0 @@
-import{l as t,g as e,j as a,f as r}from"./common-da11353c.js";const d='{"title":"","frontmatter":{"hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1606031496207.198}';var o={};o.render=function(d,o,s,n,l,f){const i=t("Nfd");return r(),e("div",null,[a(i)])};export default o;export{d as __pageData};

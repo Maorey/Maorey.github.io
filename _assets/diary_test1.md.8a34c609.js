@@ -1,1 +1,0 @@
-import{g as t,f as e,j as r}from"./common-da11353c.js";const a='{"title":"","frontmatter":{"index":1},"relativePath":"diary/test1.md","lastUpdated":1606031669150.4878}';var n={};const o=r("p",null,"大家吼, 这是我的第一篇日记",-1);n.render=function(r,a,n,d,l,s){return e(),t("div",null,[o])};export default n;export{a as __pageData};
