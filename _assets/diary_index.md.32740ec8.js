@@ -1,0 +1,1 @@
+import{x as t,j as e,k as n,p as a}from"./common-7bd5546a.js";const r='{"title":"","frontmatter":{"index":9},"relativePath":"diary/index.md","lastUpdated":1606580482207.5608}';var o={};const d=n("p",null,"日记索引",-1);o.render=function(r,o,s,i,l,m){const p=t("Menu");return a(),e("div",null,[d,n(p)])};export default o;export{r as __pageData};

@@ -1,0 +1,1 @@
+import{j as t,p as a,k as e,v as r}from"./common-7bd5546a.js";const n='{"title":"","frontmatter":{"index":1},"relativePath":"blog/js/test1.md","lastUpdated":1606579774087.3892}';var o={};const l=e("p",null,[r("大家吼, 这是我的第一篇"),e("code",null,"JavaScript"),r("笔记")],-1);o.render=function(e,r,n,o,s,d){return a(),t("div",null,[l])};export default o;export{n as __pageData};
