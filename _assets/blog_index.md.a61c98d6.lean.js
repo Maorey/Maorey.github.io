@@ -1,1 +1,0 @@
-import{x as t,j as e,k as n,p as a}from"./common-7bd5546a.js";const o='{"title":"","frontmatter":{"index":10},"relativePath":"blog/index.md","lastUpdated":1606580470691.256}';var r={};const d=n("p",null,"博客索引",-1);r.render=function(o,r,l,s,i,m){const p=t("Menu");return a(),e("div",null,[d,n(p)])};export default r;export{o as __pageData};

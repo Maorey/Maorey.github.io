@@ -1,1 +1,0 @@
-import{x as t,j as e,k as a,p as r}from"./common-7bd5546a.js";const d='{"title":"","frontmatter":{"hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1606556184056.055}';var o={};o.render=function(d,o,s,n,i,l){const f=t("Nfd");return r(),e("div",null,[a(f)])};export default o;export{d as __pageData};

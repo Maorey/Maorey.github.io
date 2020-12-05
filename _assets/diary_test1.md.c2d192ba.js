@@ -1,1 +1,0 @@
-import{j as t,p as e,k as r}from"./common-7bd5546a.js";const a='{"title":"","frontmatter":{"index":1},"relativePath":"diary/test1.md","lastUpdated":1606556220252.1826}';var n={};const o=r("p",null,"大家吼, 这是我的第一篇日记",-1);n.render=function(r,a,n,d,l,s){return e(),t("div",null,[o])};export default n;export{a as __pageData};
