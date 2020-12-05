@@ -1,0 +1,1 @@
+import{o as t,e,f as r}from"./framework.c00dda38.js";const a='{"title":"第二篇博客","description":"","frontmatter":{"title":"第二篇博客","index":2},"relativePath":"blog/test2.md","lastUpdated":1607193315511.7546}';var o={};const n=r("p",null,"大家吼, 这是我的第二篇博客",-1);o.render=function(r,a,o,d,l,i){return t(),e("div",null,[n])};export default o;export{a as __pageData};
