@@ -1,1 +1,0 @@
-import{B as t,o as e,e as r,f as n}from"./framework.c00dda38.js";const a='{"title":"博客","description":"","frontmatter":{"title":"博客","index":10},"relativePath":"blog/index.md","lastUpdated":1607193315511.7546}';var o={};const d=n("p",null,"博客索引",-1);o.render=function(a,o,i,l,s,c){const f=t("Menu");return e(),r("div",null,[d,n(f)])};export default o;export{a as __pageData};
