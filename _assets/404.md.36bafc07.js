@@ -1,0 +1,1 @@
+import{B as t,o as e,e as r,f as a}from"./framework.725e205f.js";const o='{"title":"网页走丢了","description":"","frontmatter":{"title":"网页走丢了","hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1608579449048.9202}';var s={};s.render=function(o,s,d,i,f,n){const l=t("Nfd");return e(),r("div",null,[a(l)])};export default s;export{o as __pageData};
