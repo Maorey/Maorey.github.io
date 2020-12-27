@@ -1,1 +1,0 @@
-import{o as t,e,f as r}from"./framework.a62c6d82.js";const a='{"title":"第一篇日记","description":"","frontmatter":{"title":"第一篇日记","index":1},"relativePath":"diary/test1.md","lastUpdated":1608583834288.3525}';var n={};const o=r("p",null,"大家吼, 这是我的第一篇日记",-1);n.render=function(r,a,n,d,i,l){return t(),e("div",null,[o])};export default n;export{a as __pageData};
