@@ -1,0 +1,1 @@
+import{l as t,f as e,g as r}from"./framework.8fe29fd3.js";const a='{"title":"第一篇日记","description":"","frontmatter":{"title":"第一篇日记","index":1},"relativePath":"diary/test1.md","lastUpdated":1609751205196}',d={},i=r("p",null,"大家吼, 这是我的第一篇日记",-1);d.render=function(r,a,d,l,n,o){return t(),e("div",null,[i])};export default d;export{a as __pageData};
