@@ -18,7 +18,7 @@
     <link rel="modulepreload" href="/assets/mermaid.min.22799ece.js">
     <link rel="modulepreload" href="/assets/tRexRunner.min.927f0975.js">
     <link rel="modulepreload" href="/assets/app.3eba8289.js">
-    <link rel="modulepreload" href="/assets/blog_dynamicProgramming.md.37337c81.lean.js">
+    <link rel="modulepreload" href="/assets/blog_dynamicProgramming.md.7959b0d3.lean.js">
     <link rel="modulepreload" href="/assets/app.3eba8289.js">
     <link rel="icon" href="/logo.jpg">
     
@@ -172,55 +172,36 @@ style c fill:#ddd,stroke:#ccc,stroke-dasharray:5 5</pre><ul><li>边界: <code>n 
 
   <span class="token keyword">return</span> curr
 <span class="token punctuation">}</span>
-</code></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h3 id="对比"><a class="header-anchor" href="#对比" aria-hidden="true">#</a> 对比</h3><p><em>TODO: 时间/空间复杂度</em></p><pre class="echarts loading" style="height:250px;">{
-    tooltip: {
-        trigger: &#39;axis&#39;,
-        axisPointer: {
-            type: &#39;cross&#39;,
-            crossStyle: {
-                color: &#39;#999&#39;
-            }
-        }
-    },
-    xAxis: [
-        {
-            type: &#39;category&#39;,
-            data: [&#39;普通递归&#39;, &#39;带备忘录递归&#39;, &#39;带备忘录动态规划&#39;, &#39;动态规划&#39;],
-            axisPointer: {
-                type: &#39;shadow&#39;
-            }
-        }
-    ],
-    yAxis: [
-        {
-            type: &#39;value&#39;,
-            name: &#39;时间复杂度&#39;,
-            axisLabel: {
-                formatter: &#39;O({value}}&#39;
-            }
-        },
-        {
-            type: &#39;value&#39;,
-            name: &#39;空间复杂度&#39;,
-            axisLabel: {
-                formatter: &#39;O({value})&#39;
-            }
-        }
-    ],
-    series: [
-        {
-            name: &#39;时间复杂度&#39;,
-            type: &#39;bar&#39;,
-            data: [2.0, 4.9, 7.0, 23.2]
-        },
-        {
-            name: &#39;空间复杂度&#39;,
-            type: &#39;bar&#39;,
-            yAxisIndex: 1,
-            data: [2.6, 5.9, 9.0, 26.4]
-        }
-    ]
-}</pre><h2 id="讲套路"><a class="header-anchor" href="#讲套路" aria-hidden="true">#</a> 讲套路</h2><p>上面的示例只是体现了动态规划的一般过程, 动态规划是一种求解<strong>最值</strong>的方法论, 它的核心是<strong>尽可能压缩可能解空间</strong>, 具体做法是将大问题拆解为若干小问题, 求解小问题推导出大问题的解。</p><p>设计动态规划算法主要思路为:</p><ul><li>明确状态, 搞清楚当前面对的问题</li><li>分析上游状态, 弄明白要解决当前阶段的问题最直接的需求</li><li>跟踪下游状态, 对当前问题的解决是否满足对下游的需求</li></ul><p>上下游情况考虑清楚一个, 往往就能设计出状态转移方程. 从求解一个问题开始, 一般的解决过程如下:</p><pre class="mermaid loading">flowchart TB
+</code></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h3 id="对比"><a class="header-anchor" href="#对比" aria-hidden="true">#</a> 对比</h3><pre class="echarts loading" style="height:250px;">(function() {
+function O(v){return v==4 ? &#39;O(2&lt;sup&gt;n&lt;/sup&gt;)&#39; : v==2 ? &#39;O(nlogn)&#39; : v==1 ? &#39;O(n)&#39; : v==0 ? &#39;O(0)&#39; :&#39;&#39;}
+function A(v){return v==4 ? &#39;O(2^n)&#39; : O(v)}
+return {
+  tooltip: {
+    trigger: &#39;axis&#39;,
+    confine: true,
+    formatter: function(p,t,c) {
+      var d=p[0],e=p[1],f=&#39;&lt;b style=&quot;margin-left:10px&quot;&gt;&#39;,g=&#39;&lt;/b&gt;&#39;,
+        h=&#39;&lt;br/&gt;&lt;i style=&quot;display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:middle;border-radius:100%;background:&#39;,i=&#39;&quot;&gt;&lt;/i&gt;&#39;
+      return c(t, &#39;&lt;h4 style=&quot;text-align:center&quot;&gt;&#39;+ d.name +&#39;&lt;/h4&gt;&#39;+
+        h+ d.color +i+ d.seriesName +f+ O(d.value) +g+
+        h+ e.color +i+ e.seriesName +f+ O(e.value) +g)
+    }
+  },
+  xAxis: [{
+    type: &#39;category&#39;,
+    data: [&#39;普通递归&#39;, &#39;带备忘录递归&#39;, &#39;带备忘录动态规划&#39;, &#39;动态规划&#39;],
+    axisPointer: { type: &#39;shadow&#39; }
+  }],
+  yAxis: [
+    { type: &#39;value&#39;, name: &#39;时间复杂度&#39;, axisLabel: { formatter: A } },
+    { type: &#39;value&#39;, name: &#39;空间复杂度&#39;, axisLabel: { formatter: A } }
+  ],
+  series: [
+    { name: &#39;时间复杂度&#39;, type: &#39;bar&#39;, data: [4, 2, 1, 1] },
+    { name: &#39;空间复杂度&#39;, type: &#39;bar&#39;, yAxisIndex: 1, data: [4, 2, 2, 1] }
+  ]
+}
+})()</pre><h2 id="讲套路"><a class="header-anchor" href="#讲套路" aria-hidden="true">#</a> 讲套路</h2><p>上面的示例只是体现了动态规划的一般过程, 动态规划是一种求解<strong>最值</strong>的方法论, 它的核心是<strong>尽可能压缩可能解空间</strong>, 具体做法是将大问题拆解为若干小问题, 求解小问题推导出大问题的解。</p><p>设计动态规划算法主要思路为:</p><ul><li>明确状态, 搞清楚当前面对的问题</li><li>分析上游状态, 弄明白要解决当前阶段的问题最直接的需求</li><li>跟踪下游状态, 对当前问题的解决是否满足对下游的需求</li></ul><p>上下游情况考虑清楚一个, 往往就能设计出状态转移方程. 从求解一个问题开始, 一般的解决过程如下:</p><pre class="mermaid loading">flowchart TB
   A(&quot;分析问题, 尝试枚举出所有可能解(暴力求解)&quot;) --&gt; B{&quot;分析DP要素(重叠子结构/状态/边界/无后效性), 确定是否可DP&quot;}
   B ------&gt; |否| D(其他办法)
   B --&gt; |是| C(DP开始)
@@ -378,7 +359,7 @@ getMostGold(
   <span class="token comment">// TODO</span>
 <span class="token punctuation">}</span>
 </code></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h2 id="留作业"><a class="header-anchor" href="#留作业" aria-hidden="true">#</a> 留作业</h2><p>请思考:</p><ol><li>动态规划一定比递归更优么?</li></ol><p><em>例如矿工数远远大于金矿数的情况;空间/频繁读写敏感场景</em></p><ol start="2"><li>黄金矿工各算法的时间/空间复杂度怎么评估?</li></ol><p><em>俺不知道</em></p><h2 id="参考文献"><a class="header-anchor" href="#参考文献" aria-hidden="true">#</a> 参考文献</h2><p><a href="https://zhuanlan.zhihu.com/p/31628866" target="_blank" rel="noopener noreferrer">漫画：什么是动态规划？</a></p></div></div><footer class="page-footer" data-v-d36a7fda data-v-5a019cc9><div class="edit" data-v-5a019cc9><div class="edit-link" data-v-5a019cc9 data-v-fb0131f2><a class="link" href="https://github.com/Maorey/Blog/edit/master/docs/blog/dynamicProgramming.md" target="_blank" rel="noopener noreferrer" data-v-fb0131f2>编辑本文 <svg class="icon outbound icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-fb0131f2><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div><div class="updated" data-v-5a019cc9><p class="last-updated" data-v-5a019cc9 data-v-52854a16><span class="prefix" data-v-52854a16>上次更新:</span><span class="datetime" data-v-52854a16></span></p></div></footer><div class="next-and-prev-link" data-v-d36a7fda data-v-6683615c><div class="container" data-v-6683615c><div class="prev" data-v-6683615c><a class="link" href="/blog/js/iterator" data-v-6683615c><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" class="icon icon-prev" data-v-6683615c><path d="M19,11H7.4l5.3-5.3c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0l-7,7c-0.1,0.1-0.2,0.2-0.2,0.3c-0.1,0.2-0.1,0.5,0,0.8c0.1,0.1,0.1,0.2,0.2,0.3l7,7c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L7.4,13H19c0.6,0,1-0.4,1-1S19.6,11,19,11z"></path></svg><span class="text" data-v-6683615c>迭代器</span></a></div><div class="next" data-v-6683615c><!----></div></div></div><!--[--><!--]--></div></main></div><!----><!--]--></div>
-    <script>__VP_HASH_MAP__ = JSON.parse("{\"404.md\":\"38ff7da7\",\"about.md\":\"c84534bb\",\"index.md\":\"acd6ac91\",\"blog_dynamicprogramming.md\":\"37337c81\",\"blog_index.md\":\"a84f8d1c\",\"diary_index.md\":\"04cc462a\",\"blog_js_index.md\":\"a6c10599\",\"blog_js_iterator.md\":\"430f493d\"}")</script>
+    <script>__VP_HASH_MAP__ = JSON.parse("{\"404.md\":\"f28cba21\",\"about.md\":\"8de54eb0\",\"index.md\":\"9582d0ed\",\"blog_dynamicprogramming.md\":\"7959b0d3\",\"blog_index.md\":\"1e7965ee\",\"diary_index.md\":\"d6b3c8ba\",\"blog_js_index.md\":\"961d29a6\",\"blog_js_iterator.md\":\"63101c32\"}")</script>
     <script type="module" async src="/assets/app.3eba8289.js"></script>
   </body>
 </html>
