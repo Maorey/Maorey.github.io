@@ -1,0 +1,1 @@
+import{r as t,o as e,c as r,a}from"./app.cb351c43.js";const s='{"title":"网页走丢了","description":"","frontmatter":{"title":"网页走丢了","hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1615943093605}',d={};d.render=function(s,d,i,o,n,l){const c=t("Nfd");return e(),r("div",null,[a(c)])};export default d;export{s as __pageData};
