@@ -1,1 +1,0 @@
-import{o as t,c as e,a as r}from"./app.78091446.js";const a='{"title":"2021年3月27日","description":"","frontmatter":{"title":"2021年3月27日","index":2},"relativePath":"diary/20210327.md","lastUpdated":1616836151281}',l={},n=r("p",null,"今天是我妈的生日呢",-1),i=r("p",null,"今天天气好好啊 ☀️",-1);l.render=function(r,a,l,d,o,p){return t(),e("div",null,[n,i])};export default l;export{a as __pageData};
