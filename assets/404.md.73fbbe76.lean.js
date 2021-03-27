@@ -1,1 +1,0 @@
-import{r as t,o as e,c as r,a}from"./app.ccfc2591.js";const s='{"title":"网页走丢了","description":"","frontmatter":{"title":"网页走丢了","hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1616826502053}',d={};d.render=function(s,d,i,o,n,c){const l=t("Nfd");return e(),r("div",null,[a(l)])};export default d;export{s as __pageData};
