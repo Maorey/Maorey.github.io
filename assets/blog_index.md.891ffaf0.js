@@ -1,0 +1,1 @@
+import{r as t,o as e,c as n,a as r}from"./app.ccfc2591.js";const a='{"title":"博客","description":"","frontmatter":{"title":"博客","index":10},"relativePath":"blog/index.md","lastUpdated":1616826502053}',o={},i=r("p",null,"博客索引",-1);o.render=function(a,o,l,d,s,c){const p=t("Menu");return e(),n("div",null,[i,r(p)])};export default o;export{a as __pageData};
