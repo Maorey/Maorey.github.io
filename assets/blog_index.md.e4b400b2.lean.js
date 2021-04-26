@@ -1,1 +1,0 @@
-import{r as t,o as e,c as a,a as n}from"./app.33dfdfa8.js";const r='{"title":"博客","description":"","frontmatter":{"title":"博客","index":10},"relativePath":"blog/index.md","lastUpdated":1619458846661}',d={},o=n("p",null,"博客索引",-1);d.render=function(r,d,i,l,s,p){const f=t("Menu");return e(),a("div",null,[o,n(f)])};export default d;export{r as __pageData};

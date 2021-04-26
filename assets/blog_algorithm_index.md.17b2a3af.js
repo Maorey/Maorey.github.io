@@ -1,0 +1,1 @@
+import{r as t,o as e,c as a,a as r}from"./app.33dfdfa8.js";const n='{"title":"算法","description":"","frontmatter":{"title":"算法","index":10},"relativePath":"blog/algorithm/index.md","lastUpdated":1619459543204}',o={},d=r("p",null,"算法索引",-1);o.render=function(n,o,i,l,s,p){const f=t("Menu");return e(),a("div",null,[d,r(f)])};export default o;export{n as __pageData};
