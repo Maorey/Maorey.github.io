@@ -1,1 +1,0 @@
-import{r as t,o as e,c as a,a as r}from"./app.33dfdfa8.js";const n='{"title":"日记","description":"","frontmatter":{"title":"日记","index":9},"relativePath":"diary/index.md","lastUpdated":1619459543204}',d={},i=r("p",null,"日记索引",-1);d.render=function(n,d,o,l,s,p){const f=t("Menu");return e(),a("div",null,[i,r(f)])};export default d;export{n as __pageData};
