@@ -1,1 +1,0 @@
-import{_ as t,r as e,o as a,c as o,a as r}from"./app.33dfdfa8.js";var d={components:{NotFound:t}};const n='{"title":"网页走丢了","description":"","frontmatter":{"title":"网页走丢了","hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1619539743565}';d.render=function(t,d,n,s,i,l){const p=e("NotFound");return a(),o("div",null,[r(p)])};export default d;export{n as __pageData};
