@@ -1,0 +1,1 @@
+import{r as t,o as e,c as r,a}from"./app.ce4d2512.js";const n='{"title":"算法","description":"","frontmatter":{"title":"算法","index":10},"relativePath":"blog/algorithm/index.md","lastUpdated":1619621059400}',o={},i=a("p",null,"算法索引",-1);o.render=function(n,o,l,d,s,p){const c=t("Menu");return e(),r("div",null,[i,a(c)])};export default o;export{n as __pageData};
