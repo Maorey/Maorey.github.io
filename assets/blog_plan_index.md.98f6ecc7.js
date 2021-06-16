@@ -1,1 +1,0 @@
-import{r as t,o as e,c as n,a}from"./app.cbf99977.js";const r='{"title":"想法&方案","description":"","frontmatter":{"title":"想法&方案","index":98},"relativePath":"blog/plan/index.md","lastUpdated":1623806327557}',l={},o=a("p",null,"这里是我的一些想法和方案, 方案有半成品也有成品, 客官请往下看 👇",-1);l.render=function(r,l,i,d,p,s){const c=t("Menu");return e(),n("div",null,[o,a(c)])};export default l;export{r as __pageData};
