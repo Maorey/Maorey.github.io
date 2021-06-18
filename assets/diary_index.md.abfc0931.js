@@ -1,0 +1,1 @@
+import{r as t,o as e,c as a,a as r}from"./app.7dca060c.js";const n='{"title":"日记","description":"","frontmatter":{"title":"日记","index":9},"relativePath":"diary/index.md","lastUpdated":1623977950413}',d={},i=r("p",null,"日记索引",-1);d.render=function(n,d,o,l,s,p){const c=t("Menu");return e(),a("div",null,[i,r(c)])};export default d;export{n as __pageData};
