@@ -1,0 +1,1 @@
+import{r as t,o as a,c as e,a as r}from"./app.a60a79a2.js";const n='{"title":"算法","description":"","frontmatter":{"title":"算法","index":99},"relativePath":"blog/algorithm/index.md","lastUpdated":1626834690153}',o={},i=r("p",null,"算法索引",-1);o.render=function(n,o,l,d,s,p){const u=t("Menu");return a(),e("div",null,[i,r(u)])};export default o;export{n as __pageData};

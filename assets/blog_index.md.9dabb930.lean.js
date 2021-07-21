@@ -1,1 +1,0 @@
-import{r as t,o as e,c as a,a as n}from"./app.f71ae3c3.js";const r='{"title":"博客","description":"","frontmatter":{"title":"博客","index":10},"relativePath":"blog/index.md","lastUpdated":1624383152469}',o={},i=n("p",null,"博客索引",-1);o.render=function(r,o,l,d,s,p){const c=t("Menu");return e(),a("div",null,[i,n(c)])};export default o;export{r as __pageData};
