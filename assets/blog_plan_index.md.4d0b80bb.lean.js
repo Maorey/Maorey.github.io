@@ -1,0 +1,1 @@
+import{r as t,o as e,c as a,a as n,d as r}from"./app.9e23c0b3.js";const l='{"title":"想法&方案","description":"","frontmatter":{"title":"想法&方案","index":98},"relativePath":"blog/plan/index.md","lastUpdated":1629831169557}',s={},d=r("p",null,"这里是我的一些想法和方案, 方案有半成品也有成品, 客官请往下看 👇",-1);s.render=function(r,l,s,i,o,p){const c=t("Menu");return e(),a("div",null,[d,n(c)])};export{l as __pageData,s as default};
