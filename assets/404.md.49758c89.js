@@ -1,1 +1,0 @@
-import{_ as t,r as a,o as e,c as o,a as r}from"./app.65a05e52.js";var s={components:{NotFound:t}};const n='{"title":"网页走丢了","description":"","frontmatter":{"title":"网页走丢了","hide":true,"sidebar":false},"relativePath":"404.md","lastUpdated":1630342060173}';s.render=function(t,s,n,d,i,l){const p=a("NotFound");return e(),o("div",null,[r(p)])};export{n as __pageData,s as default};
